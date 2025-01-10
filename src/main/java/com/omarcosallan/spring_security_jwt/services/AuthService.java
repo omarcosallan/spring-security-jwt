@@ -4,7 +4,6 @@ import com.omarcosallan.spring_security_jwt.domain.ERole;
 import com.omarcosallan.spring_security_jwt.domain.Role;
 import com.omarcosallan.spring_security_jwt.domain.User;
 import com.omarcosallan.spring_security_jwt.domain.UserDetailsImpl;
-import com.omarcosallan.spring_security_jwt.dto.request.LoginRequest;
 import com.omarcosallan.spring_security_jwt.dto.request.SignupRequest;
 import com.omarcosallan.spring_security_jwt.dto.response.JwtResponse;
 import com.omarcosallan.spring_security_jwt.exceptions.ObjectAlreadyExistsException;
@@ -48,7 +47,9 @@ public class AuthService {
 
     public User register(SignupRequest body) {
         userRepository.findByEmail(body.email()).ifPresent(user -> {
-            throw new ObjectAlreadyExistsException("User already exists.");
+            throw new ObjectAlreadyExistsException(
+                    String.format("A user with the email '%s' already exists. Please use a different email address.", body.email())
+            );
         });
 
         User user = new User();

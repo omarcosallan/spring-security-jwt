@@ -1,9 +1,12 @@
 package com.omarcosallan.spring_security_jwt.exceptions;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 
-public class StandardError extends RuntimeException {
+import java.net.URI;
+
+public abstract class StandardError extends RuntimeException {
 
     public StandardError() {}
 
@@ -11,9 +14,13 @@ public class StandardError extends RuntimeException {
         super(message);
     }
 
-    public ProblemDetail toProblemDetail() {
-        ProblemDetail pb = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-        pb.setTitle("Internal server error");
-        return pb;
+    protected ProblemDetail createProblemDetail(HttpServletRequest request, HttpStatus status, String title, String detail) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(status);
+        problemDetail.setTitle(title);
+        problemDetail.setDetail(detail);
+        problemDetail.setInstance(URI.create(request.getRequestURI()));
+        return problemDetail;
     }
+
+    public abstract ProblemDetail toProblemDetail(HttpServletRequest request);
 }

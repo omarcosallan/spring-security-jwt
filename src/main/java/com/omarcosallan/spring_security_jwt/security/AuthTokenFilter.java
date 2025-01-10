@@ -1,5 +1,6 @@
 package com.omarcosallan.spring_security_jwt.security;
 
+import com.omarcosallan.spring_security_jwt.exceptions.AuthorizationException;
 import com.omarcosallan.spring_security_jwt.services.JwtService;
 import com.omarcosallan.spring_security_jwt.services.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
@@ -36,6 +37,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+            } else {
+                throw new AuthorizationException("Invalid or missing JWT token");
             }
         } catch (Exception e) {
             logger.error("Cannot set user authentication: {}", e);

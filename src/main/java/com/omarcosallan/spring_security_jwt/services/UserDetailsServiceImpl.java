@@ -2,6 +2,7 @@ package com.omarcosallan.spring_security_jwt.services;
 
 import com.omarcosallan.spring_security_jwt.domain.User;
 import com.omarcosallan.spring_security_jwt.domain.UserDetailsImpl;
+import com.omarcosallan.spring_security_jwt.exceptions.AuthorizationException;
 import com.omarcosallan.spring_security_jwt.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+                .orElseThrow(() -> new AuthorizationException("Invalid credentials. Please try again."));
 
         return UserDetailsImpl.build(user);
     }

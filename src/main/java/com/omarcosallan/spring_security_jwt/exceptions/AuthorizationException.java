@@ -4,10 +4,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 
-public class ObjectNotFoundException extends StandardError {
+public class AuthorizationException extends StandardError {
     private String message;
 
-    public ObjectNotFoundException(String message) {
+    public AuthorizationException(String message) {
         this.message = message;
     }
 
@@ -15,8 +15,8 @@ public class ObjectNotFoundException extends StandardError {
     public ProblemDetail toProblemDetail(HttpServletRequest request) {
         return createProblemDetail(
                 request,
-                HttpStatus.NOT_FOUND,
-                "Object not found",
+                HttpStatus.UNAUTHORIZED,
+                "Unauthorized access",
                 message
         );
     }
