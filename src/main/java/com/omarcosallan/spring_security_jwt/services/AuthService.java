@@ -13,11 +13,11 @@ import com.omarcosallan.spring_security_jwt.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class AuthService {
@@ -35,10 +35,11 @@ public class AuthService {
     public JwtResponse authenticate(Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        String jwt = jwtService.generateToken(authentication);
+        Jwt jwt = jwtService.generateToken(authentication);
 
         return new JwtResponse(
-                jwt,
+                jwt.getTokenValue(),
+                jwt.getExpiresAt(),
                 userDetails.getId(),
                 userDetails.getName(),
                 userDetails.getEmail()
@@ -57,7 +58,7 @@ public class AuthService {
         user.setEmail(body.email());
         user.setPassword(passwordEncoder.encode(body.password()));
 
-        Set<String> strRoles = body.roles();
+        Set<ERole> strRoles = body.roles();
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
@@ -65,8 +66,7 @@ public class AuthService {
                     .orElseThrow(() -> new ObjectNotFoundException("Role is not found."));
             roles.add(userRole);
         } else {
-            Set<ERole> roleNames = strRoles.stream().map(ERole::valueOf).collect(Collectors.toSet());
-            Set<Role> availableRoles = roleRepository.findByNameIn(roleNames);
+            Set<Role> availableRoles = roleRepository.findByNameIn(strRoles);
             roles.addAll(availableRoles);
         }
 

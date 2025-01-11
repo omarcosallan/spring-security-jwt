@@ -21,7 +21,7 @@ public class JwtService {
     @Autowired
     private JwtDecoder jwtDecoder;
 
-    public String generateToken(Authentication authentication) {
+    public Jwt generateToken(Authentication authentication) {
         Instant now = Instant.now();
         long expiry = 3600L;
 
@@ -39,7 +39,7 @@ public class JwtService {
                 .claim("scope", scopes)
                 .build();
 
-        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+        return jwtEncoder.encode(JwtEncoderParameters.from(claims));
     }
 
 
