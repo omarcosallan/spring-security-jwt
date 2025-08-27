@@ -35,7 +35,7 @@ public class AuthService {
 
         User user = new User();
         user.setName(dto.name());
-        user.setUsername(dto.email());
+        user.setUsername(dto.username());
         user.setEmail(dto.email());
         String encryptedPassword = new BCryptPasswordEncoder().encode(dto.password());
         user.setPassword(encryptedPassword);
