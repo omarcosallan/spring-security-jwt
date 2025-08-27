@@ -47,6 +47,16 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ProblemDetail> handleException(Exception e) {
+        return createResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "Ocorreu um erro interno",
+                "Não foi possível processar a sua requisição. Por favor, entre em contato com o suporte",
+                null
+        );
+    }
+
     private ResponseEntity<ProblemDetail> createResponse(HttpStatus status, String title, String detail, Map<String, Object> properties) {
         ProblemDetail pd = ProblemDetail.forStatus(status);
         pd.setTitle(title);
