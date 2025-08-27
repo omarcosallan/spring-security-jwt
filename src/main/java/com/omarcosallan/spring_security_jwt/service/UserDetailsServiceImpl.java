@@ -1,5 +1,6 @@
 package com.omarcosallan.spring_security_jwt.service;
 
+import com.omarcosallan.spring_security_jwt.exception.ResourceNotFoundException;
 import com.omarcosallan.spring_security_jwt.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Usuário com e-mail '" + username + "' não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário com username '" + username + "' não encontrado"));
     }
 }

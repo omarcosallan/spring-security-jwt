@@ -4,6 +4,7 @@ import com.omarcosallan.spring_security_jwt.dto.LoginDTO;
 import com.omarcosallan.spring_security_jwt.dto.RegisterDTO;
 import com.omarcosallan.spring_security_jwt.entity.User;
 import com.omarcosallan.spring_security_jwt.entity.enums.Role;
+import com.omarcosallan.spring_security_jwt.exception.AlreadyExistsException;
 import com.omarcosallan.spring_security_jwt.repository.UserRepository;
 import com.omarcosallan.spring_security_jwt.security.TokenService;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,7 @@ public class AuthService {
     @Transactional
     public User save(RegisterDTO dto) {
         if (userRepository.existsByEmail(dto.email())) {
-            throw new RuntimeException("O e-mail " + dto.email() + " já está em uso.");
+            throw new AlreadyExistsException("O e-mail " + dto.email() + " já está em uso.");
         }
 
         User user = new User();
