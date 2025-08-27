@@ -29,6 +29,9 @@ public class AuthService {
         if (userRepository.existsByEmail(dto.email())) {
             throw new AlreadyExistsException("O e-mail " + dto.email() + " já está em uso.");
         }
+        if (userRepository.existsByUsername(dto.username())) {
+            throw new AlreadyExistsException("O username " + dto.username() + " já está em uso.");
+        }
 
         User user = new User();
         user.setName(dto.name());
