@@ -3,19 +3,23 @@ package com.omarcosallan.spring_security_jwt.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(AlreadyExistsException.class)
     public ResponseEntity<ProblemDetail> handleAlreadyExistsException(AlreadyExistsException e) {
-        return createResponse(HttpStatus.CONFLICT,
-                "Recurso já existe.",
+        return createResponse(
+                HttpStatus.CONFLICT,
+                "Recurso já existe",
                 e.getMessage(),
                 null
         );
@@ -23,7 +27,24 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ProblemDetail> handleResourceNotFoundException(ResourceNotFoundException e) {
-        return createResponse(HttpStatus.NOT_FOUND, "Recurso não encontrado.", e.getMessage(), null);
+        return createResponse(
+                HttpStatus.NOT_FOUND,
+                "Recurso não encontrado",
+                e.getMessage(),
+                null
+        );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ProblemDetail> handleMethodArgumentNotValidExceptionException(MethodArgumentNotValidException e) {
+        Map<String, String> errors = e.getBindingResult().getFieldErrors().stream()
+                .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+        return createResponse(
+                HttpStatus.BAD_REQUEST,
+                "Dados inválidos",
+                "Um ou mais campos estão preenchidos incorretamente. Verifique os dados informados e tente novamente",
+                Map.of("errors", errors)
+        );
     }
 
     private ResponseEntity<ProblemDetail> createResponse(HttpStatus status, String title, String detail, Map<String, Object> properties) {
