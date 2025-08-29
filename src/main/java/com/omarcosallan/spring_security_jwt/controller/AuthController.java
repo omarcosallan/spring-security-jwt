@@ -1,7 +1,7 @@
 package com.omarcosallan.spring_security_jwt.controller;
 
-import com.omarcosallan.spring_security_jwt.dto.LoginDTO;
-import com.omarcosallan.spring_security_jwt.dto.RegisterDTO;
+import com.omarcosallan.spring_security_jwt.entity.dto.LoginDTO;
+import com.omarcosallan.spring_security_jwt.entity.dto.RegisterDTO;
 import com.omarcosallan.spring_security_jwt.entity.User;
 import com.omarcosallan.spring_security_jwt.service.AuthService;
 import jakarta.validation.Valid;

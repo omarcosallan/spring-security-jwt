@@ -1,6 +1,6 @@
 package com.omarcosallan.spring_security_jwt.entity;
 
-import com.omarcosallan.spring_security_jwt.entity.enums.Role;
+import com.omarcosallan.spring_security_jwt.entity.enumerated.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

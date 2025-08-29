@@ -1,4 +1,4 @@
-package com.omarcosallan.spring_security_jwt.entity.enums;
+package com.omarcosallan.spring_security_jwt.entity.enumerated;
 
 import org.springframework.security.core.GrantedAuthority;
 

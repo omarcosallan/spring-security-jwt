@@ -1,9 +1,9 @@
 package com.omarcosallan.spring_security_jwt.service;
 
-import com.omarcosallan.spring_security_jwt.dto.LoginDTO;
-import com.omarcosallan.spring_security_jwt.dto.RegisterDTO;
+import com.omarcosallan.spring_security_jwt.entity.dto.LoginDTO;
+import com.omarcosallan.spring_security_jwt.entity.dto.RegisterDTO;
 import com.omarcosallan.spring_security_jwt.entity.User;
-import com.omarcosallan.spring_security_jwt.entity.enums.Role;
+import com.omarcosallan.spring_security_jwt.entity.enumerated.Role;
 import com.omarcosallan.spring_security_jwt.exception.AlreadyExistsException;
 import com.omarcosallan.spring_security_jwt.repository.UserRepository;
 import com.omarcosallan.spring_security_jwt.security.TokenService;

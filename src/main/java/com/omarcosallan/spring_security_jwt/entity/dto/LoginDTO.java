@@ -1,4 +1,4 @@
-package com.omarcosallan.spring_security_jwt.dto;
+package com.omarcosallan.spring_security_jwt.entity.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
