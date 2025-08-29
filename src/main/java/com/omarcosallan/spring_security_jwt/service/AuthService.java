@@ -5,6 +5,7 @@ import com.omarcosallan.spring_security_jwt.entity.dto.RegisterDTO;
 import com.omarcosallan.spring_security_jwt.entity.User;
 import com.omarcosallan.spring_security_jwt.entity.enumerated.Role;
 import com.omarcosallan.spring_security_jwt.exception.AlreadyExistsException;
+import com.omarcosallan.spring_security_jwt.mapper.UserMapper;
 import com.omarcosallan.spring_security_jwt.repository.UserRepository;
 import com.omarcosallan.spring_security_jwt.security.TokenService;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
+    private final UserMapper userMapper;
 
     @Transactional
     public User save(RegisterDTO dto) {
@@ -33,10 +35,7 @@ public class AuthService {
             throw new AlreadyExistsException("O username " + dto.username() + " já está em uso.");
         }
 
-        User user = new User();
-        user.setName(dto.name());
-        user.setUsername(dto.username());
-        user.setEmail(dto.email());
+        User user = userMapper.toEntity(dto);
         String encryptedPassword = new BCryptPasswordEncoder().encode(dto.password());
         user.setPassword(encryptedPassword);
         user.setRole(Role.USER);
