@@ -35,8 +35,7 @@ public class TokenService {
                 .toList();
 
         return Jwts.builder()
-                .setSubject(userDetails.getUsername())
-                .claim("email", email)
+                .setSubject(email)
                 .claim("roles", roles)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(key)
